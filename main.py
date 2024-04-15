@@ -96,6 +96,7 @@ INICIO = time.time()
 # variaveis
 ticks = 1
 fim = time.time()
+gols = 0
         
 # funcoes
 def remove_raquete_esq(i):
@@ -112,7 +113,7 @@ def remove_raquete_dir(i):
 
 # main
 def treinar(genomas, config):
-    global raquetes_dir, raquetes_esq, ge, ge2, redes, redes2, count_dir, count_esq, ticks, tempo_vivo, fim
+    global raquetes_dir, raquetes_esq, ge, ge2, redes, redes2, count_dir, count_esq, ticks, tempo_vivo, fim, gols
     bola = Bola()
     raquetes_esq = []
     raquetes_dir = []
@@ -124,16 +125,20 @@ def treinar(genomas, config):
     def stats():
         text_ger = FONT.render(f'Geração: {p.generation + 1}', True, (255, 255, 255))
         text_tmp = FONT.render(f'Treinando IA: {int(tempo_vivo)}s', True, (255, 255, 255))
+        text_gls = FONT.render(f'Gols: {int(gols)}', True, (255, 255, 255))
 
         TELA.blit(text_ger, (450, 35))
         TELA.blit(text_tmp, (420, 10))
+        TELA.blit(text_gls, (480, 60))
 
     def sucesso():
         text_ger = FONT.render(f'Geração: {p.generation + 1}', True, (255, 255, 255))
         text_tmp = FONT.render(f'Concluído em: {int(tempo_vivo)}s', True, (255, 255, 255))
+        text_gls = FONT.render(f'Foram necessários {int(gols)} gols para treinar', True, (255, 255, 255))
 
         TELA.blit(text_ger, (450, 35))
         TELA.blit(text_tmp, (420, 10))
+        TELA.blit(text_gls, (310, 60))
 
     for id_genoma, genoma in genomas:
         raquetes_esq.append(RaqueteUm())
@@ -215,6 +220,7 @@ def treinar(genomas, config):
                 remove_raquete_dir(count_dir)
                 count_dir -= 1
                 bola.reset()
+                gols += 1
                 if len(raquetes_dir) != 0:
                     raquetes_dir[count_dir].inicio = time.time()
                     raquetes_dir[count_dir].tempo_vida = 0
@@ -223,6 +229,7 @@ def treinar(genomas, config):
                 remove_raquete_esq(count_esq)
                 count_esq -= 1
                 bola.reset()
+                gols += 1
                 if len(raquetes_esq) != 0:
                     raquetes_esq[count_esq].inicio = time.time()
                     raquetes_esq[count_esq].tempo_vida = 0
